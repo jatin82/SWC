@@ -1,0 +1,125 @@
+process.stdin.resume();
+process.stdin.setEncoding("utf-8");
+var stdin_input = "";
+
+process.stdin.on("data", function (input) {
+    stdin_input += input;                               
+});
+
+process.stdin.on("end", function () {
+   main(stdin_input);
+});
+
+Array.prototype.peek = function(){
+    return this[this.length-1];    
+};
+Array.prototype.getLast = function(){
+    return parseInt(this[this.length-1]);
+};
+Array.prototype.setLast = function(x){
+    this[this.length-1] = x;
+};
+Array.prototype.toString = function(){
+    return this.join(' ');
+};
+Number.prototype.compareTo = function(x){
+    if(x === this) return 0;
+    else if(x>this) return -1;
+    else return 1;
+};
+
+var Scanner = (function () {
+    function Scanner(input) {
+        this.token = 0;
+        this.input = input.split("\n");
+    }
+    Scanner.prototype.next = function () {
+        return this.input[this.token++];
+    };
+    Scanner.prototype.nextInt = function () {
+        return parseInt(this.input[this.token++]);
+    };
+    Scanner.prototype.nextIntArray = function (delimiter) {
+        var ans = this.input[this.token++].split(delimiter);
+        return ans.map((t)=>{
+           return +t;
+        });
+       /* var ansInt = [];
+        for (var i = 0; i < ans.length; i++) {
+            ansInt.push(+ans[i]);
+        }
+        return ansInt;*/
+    };
+    return Scanner;
+}());
+
+/*function Scanner(input){
+    this.input = input.split('\n');
+    this.nextToken = 0;
+    this.nextLine = function(){
+        return this.input[this.nextToken++];
+    };
+    this.nextIntArray = function(delimter){
+        var ans = this.input[this.nextToken++].split(delimter);
+        ans.forEach(function(entry){
+            entry = parseInt(entry);
+        },this);
+        return ans;
+    }
+}
+*/
+function buildUtil(a,tree,start,end,node,isOdd){
+    if(end<start) return 0;
+
+    if(start===end){
+        if(isOdd){
+            tree[node] = a[start]%2!==0?1:0;
+        }
+        else{
+            tree[node] = a[start]%2===0?1:0;
+        }
+        return tree[node];
+    }
+    let mid =  (start+end)/2;
+    tree[node] = buildUtil(a,tree,start,mid,2*node+1) + buildUtil(a,tree,mid+1,end,2*node+2);
+    return tree[node];
+}
+
+function build(a,tree,flag){
+    buildUtil(a,tree,0,a.length-1,0,flag);    
+}
+
+function query(tree,l,r){
+
+}
+
+function insert(a,tree,pos,x){
+    insertUtil(a,tree,pos,x,0,a.length-1); // to do
+}
+
+function main(input) {
+    let sc = new Scanner(input);
+    let n = sc.nextInt();
+    let a = sc.nextIntArray(' ');
+
+    let odd = [];
+    let even = [];
+    build(a,odd,true);
+    build(a,even,false);
+    
+    let q = sc.nextInt();
+    while(q-->0){
+        let [op,x,y] = sc.nextIntArray(' ');
+        if(op===0){
+            insert(odd,x,y);
+            insert(odd,x,y);
+        }
+        else if(op===1){
+            console.log(query(even,x,y));
+        }
+        else{
+            console.log(query(odd,x,y));
+        }
+    }   
+    // process.stdout.write("Hi, " + input + ".\n");       // Writing output to STDOUT
+}
