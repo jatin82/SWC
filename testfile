@@ -55,3 +55,8 @@ model.add(tf.keras.layers.Dense(units=128, activation='relu'))
 model.add(tf.keras.layers.BatchNormalization())
 model.add(tf.keras.layers.Dropout(0.2))
 model.add(tf.keras.layers.Dense(units=10, activation='softmax'))
+
+
+
+
+https://www.hackerearth.com/problem/approximate/save-hawkins-3d060dfa/
