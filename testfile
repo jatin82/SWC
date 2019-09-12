@@ -60,3 +60,54 @@ model.add(tf.keras.layers.Dense(units=10, activation='softmax'))
 
 
 https://www.hackerearth.com/problem/approximate/save-hawkins-3d060dfa/
+
+--------------------------------------------------------------------------------------------------
+
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Sep 10 11:52:10 2019
+
+@author: j.sokhal
+"""
+#cd D:/HE_Challenge_data/
+
+import numpy as np
+from tensorflow.python.keras.applications.resnet50 import preprocess_input
+from tensorflow.python.keras.preprocessing.image import load_img, img_to_array
+from os.path import join
+
+import pandas as pd
+
+from IPython.display import Image, display
+## reading CSV files for IDS
+    
+train = pd.read_csv('./data/train.csv')
+test = pd.read_csv('./data/test.csv')
+
+trainDir = './data/train/'  
+testDir = './data/test/'
+format = '.jpg'
+
+trainIds = [join(trainDir,str(id)+format) for id in train['image_id']]
+
+
+image_size = 500
+
+def read_and_prep_images(img_paths, img_height=image_size, img_width=image_size):
+    imgs = []
+    n = len(trainIds)
+    for i in list(range(0,n,100)):
+        end = i + 100
+        print(i);
+        if(end > n):
+            end = n
+        img = [load_img(img_path, target_size=(img_height, img_width)) for img_path in img_paths[i:end]]
+        imgs.append(img)
+    imgs = [load_img(img_path, target_size=(img_height, img_width)) for img_path in img_paths]
+    img_array = np.array([img_to_array(img) for img in imgs])
+    output = preprocess_input(img_array)
+    return(output)
+
+out = read_and_prep_images(trainIds[0:1000])
+
+----------------------------------------------------------------------------------------------
