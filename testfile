@@ -111,3 +111,8 @@ def read_and_prep_images(img_paths, img_height=image_size, img_width=image_size)
 out = read_and_prep_images(trainIds[0:1000])
 
 ----------------------------------------------------------------------------------------------
+
+
+model.compile(loss="sparse_categorical_crossentropy",
+              optimizer="Adam", metrics=["sparse_categorical_accuracy"])
+
