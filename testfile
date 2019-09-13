@@ -115,4 +115,118 @@ out = read_and_prep_images(trainIds[0:1000])
 
 model.compile(loss="sparse_categorical_crossentropy",
               optimizer="Adam", metrics=["sparse_categorical_accuracy"])
+------------------------------------------------------------------------------------------------------------
+
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Sep 10 11:52:10 2019
+
+@author: j.sokhal
+"""
+#cd D:/HE_Challenge_data/
+
+import numpy as np
+from tensorflow.python.keras.applications.resnet50 import preprocess_input
+from tensorflow.python.keras.preprocessing.image import load_img, img_to_array
+from os.path import join
+from PIL import Image as pilImage
+from io import BytesIO 
+import io
+import tensorflow as tf
+import pandas as pd
+
+from IPython.display import Image, display
+## reading CSV files for IDS
+
+dire = ""    
+train = pd.read_csv('./data/train.csv')
+test = pd.read_csv('./data/test.csv')
+
+trainDir = './data/train/'  
+testDir = './data/test/'
+format = '.jpg'
+
+trainIds = [join(trainDir,str(id)+format) for id in train['image_id']]
+testIds = [join(testDir,str(id)+format) for id in test['image_id']]
+
+
+image_size = 128
+
+
+
+def read_Image_file(path,size=128):    
+    with open(path, 'rb') as fin:
+        #data = io.BytesIO(fin.read())
+        interpolation=pilImage.NEAREST
+        width_height_tuple = (size,size)
+        ioFile = pilImage.open(BytesIO(fin.read()))
+        resample = interpolation
+        ioFile = ioFile.resize(width_height_tuple, resample)        
+        fin.close()
+    return ioFile
+   
+def getJpegList(paths):
+    imgs = []
+    n = len(paths)
+    for i in list(range(0,n,100)):
+        end = i + 100
+        print(i)
+        if(end > n):
+            end = n
+        [imgs.append(read_Image_file(img_path)) for img_path in paths[i:end]]
+    return imgs
+
+def read_and_prep_images(img_paths, img_height=image_size, img_width=image_size):
+    #print(len(img_paths))
+    imgs = getJpegList(img_paths)
+    #imgs = [load_img(img_path, target_size=(img_height, img_width)) for img_path in img_paths]
+    img_array = np.array([img_to_array(img) for img in imgs])
+    output = preprocess_input(img_array)
+    return(output)
+
+trainData = read_and_prep_images(trainIds[0:10])
+testData = read_and_prep_images(testIds[0:100])
+
+trainData = trainData/255.0
+testData = testData/255.0
+
+y = np.array(train.iloc[:10,1])
+y = y.reshape(y.shape[0],1)
+
+
+model = tf.keras.models.Sequential()
+model.add(tf.keras.layers.Conv2D(filters=256, kernel_size=3, padding="same", activation="relu", input_shape=[image_size, image_size, 3]))
+model.add(tf.keras.layers.BatchNormalization())
+model.add(tf.keras.layers.Conv2D(filters=256, kernel_size=3, padding="same", activation="relu"))
+model.add(tf.keras.layers.BatchNormalization())
+model.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2, padding='valid'))
+model.add(tf.keras.layers.Dropout(rate=0.2))
+model.add(tf.keras.layers.Conv2D(filters=256, kernel_size=3, padding="same", activation="relu"))
+model.add(tf.keras.layers.BatchNormalization())
+model.add(tf.keras.layers.Conv2D(filters=512, kernel_size=3, padding="same", activation="relu"))
+model.add(tf.keras.layers.BatchNormalization())
+model.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2, padding='valid'))
+model.add(tf.keras.layers.Dropout(rate=0.2))
+model.add(tf.keras.layers.Conv2D(filters=512, kernel_size=3, padding="same", activation="relu"))
+model.add(tf.keras.layers.BatchNormalization())
+#model.add(tf.keras.layers.Conv2D(filters=1024, kernel_size=3, padding="same", activation="relu"))
+#model.add(tf.keras.layers.BatchNormalization())
+#model.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2, padding='valid'))
+#model.add(tf.keras.layers.Dropout(rate=0.2))
+model.add(tf.keras.layers.Flatten())
+model.add(tf.keras.layers.Dense(units=256, activation='relu'))
+model.add(tf.keras.layers.BatchNormalization())
+model.add(tf.keras.layers.Dropout(0.2))
+model.add(tf.keras.layers.Dense(units=102, activation='softmax'))
+
+model.compile(loss="sparse_categorical_crossentropy",
+              optimizer="Adam", metrics=["sparse_categorical_accuracy"])
+
+
+
+model.fit(trainData,y,epochs=5)
+
+
+
+
 
