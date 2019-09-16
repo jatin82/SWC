@@ -227,6 +227,28 @@ model.compile(loss="sparse_categorical_crossentropy",
 model.fit(trainData,y,epochs=5)
 
 
-
+---------------------------------------------------------------------------------------------------------------
+public static long getAns(long n,long m){
+        if(m < (n-1)){
+            return -1L;
+        }
+        if(m<=n){
+            return 2L;
+        }
+        long base = 2;
+        long extra = (m - n)/n;
+        return (base+extra+1);
+    }
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		Scanner sc = new Scanner(System.in);
+		int testCase = sc.nextInt();
+		while(testCase-->0){
+		    long n = sc.nextLong();
+		    long m = sc.nextLong();
+		    long ans = getAns(n,m);
+		    System.out.println(ans);
+		}
+	}
 
 
