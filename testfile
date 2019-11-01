@@ -308,5 +308,36 @@ model.fit(trainData,y,epochs=5)
 		}
 		System.out.println(prev);
 	}
-
+-----------------------------------------------------------------------------------------------------------------------------
+public static String convert(String A, int B) {
+        int i = 0;
+        int n = A.length();
+        if(n<=2 || B <=1){
+            return A;
+        }
+        int b = B;
+        StringBuilder sb = new StringBuilder();
+        while(i<B){
+            int index = i;
+            while(index<n){
+            	if(b==B) {
+            		index += ((b-2) * 2) + 2;
+            		if(index<n) sb.append(A.charAt(index));
+            	}
+            	else if(b==0) {
+            		index += ((B-2) * 2) + 2;
+            		if(index<n) sb.append(A.charAt(index));
+            	}
+            	else {
+            		index+= ((b-2)*2) + 2;
+            		if(index<n) sb.append(A.charAt(index));
+            		index += ((B-2) * 2) + 2;
+            		if(index<n) sb.append(A.charAt(index));
+            	}
+            }
+            b--;
+            i++;
+        }
+        return sb.toString();
+    }
 
