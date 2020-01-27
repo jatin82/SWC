@@ -308,5 +308,1129 @@ model.fit(trainData,y,epochs=5)
 		}
 		System.out.println(prev);
 	}
+=================================================================================================================
 
+========================================================================================================
+import cv2 as cv
+import time
+
+dir = 'D:/Python_pocs/AutoLock/present/'
+windowName = 'Jatin'
+delay = 30.0
+start=201
+sample=2
+end=300
+
+
+def prepAndSaveData(windowName,path,sample,start=1):
+    try:
+        itr = start
+        cv.namedWindow(windowName)
+        video = cv.VideoCapture(0)
+        if video.isOpened():
+            rval, frame = video.read()
+        else:
+            rval = False    
+        while rval:
+            fileName = path + str(itr)+".png"
+            print(fileName)
+            cv.imshow(windowName,frame)
+            rval, frame = video.read()
+            cv.imwrite(fileName, frame)
+            if itr==(start + sample):
+                break
+            itr = itr + 1
+        video.release()
+        cv.destroyWindow(windowName)
+        cv.destroyAllWindows()
+    except:
+        print("Some Error")
+
+def getSampleWithDelay(path,delay=2.0,start=1,end=10,sample=2):
+    try:
+        for i in range(start,end,sample):    
+            time.sleep(delay)
+            prepAndSaveData(windowName='temp',path=path,sample=sample,start=i)
+    except:
+        print("Error")
+
+#prepAndSaveData(windowName,dir,sample)
+
+getSampleWithDelay(dir,delay=delay,start=start,end=end,sample=sample)
+
+===============================================================================================
+
+
+TODO:
+https://www.geeksforgeeks.org/lowest-common-ancestor-in-a-binary-tree-set-2-using-parent-pointer/
+
+https://www.interviewbit.com/problems/stringoholics/
+https://www.geeksforgeeks.org/lru-cache-implementation/
+https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array/ method 4
+https://www.geeksforgeeks.org/word-ladder-set-2-bi-directional-bfs/
+SYstem Design
+
+
+Cache Line, Cache internal concept, RR scheduling
+============================================================================================
+EXCEPTIONAL
+
+https://leetcode.com/problems/gas-station/
+
+https://github.com/YaokaiYang-assaultmaster/LeetCode/blob/master/LeetcodeAlgorithmQuestions/792.%20Number%20of%20Matching%20Subsequences.md
+
+
+
+
+=================================================================================================================
+
+Long GOALS
+
+https://github.com/agarwalkaushal/Placement-Prep
+
+
+https://www.geeksforgeeks.org/top-25-interview-questions/
+
+
+
+
+======================================================================================================
+DONE REVISE:
+
+1. https://www.geeksforgeeks.org/check-if-a-binary-tree-is-subtree-of-another-binary-tree/
+2. https://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/ 
+3. https://www.geeksforgeeks.org/a-program-to-check-if-a-binary-tree-is-bst-or-not/
+4. https://practice.geeksforgeeks.org/problems/left-view-of-binary-tree/1
+5. https://www.geeksforgeeks.org/nth-node-from-the-end-of-a-linked-list/ --->look at the 2 pointer approach
+6. https://www.geeksforgeeks.org/sort-an-array-of-0s-1s-and-2s/
+7. https://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/ 
+8. https://www.geeksforgeeks.org/kth-non-repeating-character/
+10. https://www.geeksforgeeks.org/bottom-view-binary-tree/		
+11. https://www.geeksforgeeks.org/amazon-sde-interview-experience-july20-2019/
+
+==============================================================================================================
+EXPEDIA
+1. https://www.geeksforgeeks.org/ternary-search-tree/
+TODO: 2. https://www.geeksforgeeks.org/foldable-binary-trees/ OR 3. https://www.geeksforgeeks.org/write-c-code-to-determine-if-two-trees-are-identical/ 	
+
+https://www.geeksforgeeks.org/expedia-interview-experience-set-6-for-sde/
+https://www.geeksforgeeks.org/expedia-interview-experience-set-9-1-8-years-experienced/
+
+
+Cache Line, Cache internal concept, RR scheduling
+
+
+================================================================================================================
+
+ADOBE
+
+
+https://www.geeksforgeeks.org/word-ladder-set-2-bi-directional-bfs/
+
+
+
+
+=======================================================================================================
+============================================================================================================
+
+package InterviewBit;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Stack;
+import java.util.stream.Collectors;
+
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
+public class PlayGround {
+	
+	
+	static class A {
+		public void start() {
+			System.out.println("A");
+
+		}
+	}
+	static class B extends A {
+		public void start() {
+			System.out.println("B");
+
+		}
+	}
+	
+	
+	
+	public static void stressTesting() {
+		Random r = new Random();
+		long max = (long)Math.pow(10, 4);
+		int n_itr = 100000;
+		int n_x = (int)Math.pow(10, 9);
+		boolean breaked = true;
+		while(breaked) {
+			long itr = 0;
+			
+			while(itr<max && breaked) {
+				int rn = r.nextInt(n_itr)+1;
+				int n = rn;
+				ArrayList<Integer> arrive = new ArrayList<Integer>();
+				for(int i=0;i<n;i++) {
+					int rx = r.nextInt(n_x);
+					int x = rx + 1;
+					arrive.add(x);
+				}
+
+				int actual = new PlayGround().maxSpecialProduct(arrive);
+				int expected = new PlayGround().maxSpecialProductNaive(arrive);
+				
+				
+				
+				if(expected!=actual) {
+					System.out.println("Failed");
+					printArray(arrive);
+					System.out.println("Failed Naive solution: "+expected +" but got : "+ actual);
+					breaked = false;
+					break;
+				}
+				else {
+					//printArray(arrive);
+					System.out.println("Success : iteration : "+itr);
+				}
+				itr++;
+			}
+			
+			n_itr+=500;
+			break;
+		}
+		
+		
+	}
+	
+	
+	public static void printArray(ArrayList<Integer> arr) {
+		System.out.print(arr.size()+" : ");
+		for(int i=0;i<arr.size();i++) {
+			System.out.print(arr.get(i)+" ");
+		}
+		System.out.println();
+	}
+	public int repeatedNumber2(final List<Integer> a) {
+        
+        List<Integer> d = a.stream().collect(Collectors.groupingBy(c->c,Collectors.counting()))
+                            .entrySet().stream().filter(t->t.getValue()>1).map(t->t.getKey())
+                            .collect(Collectors.toList());
+        if(d.size()==0){
+            return -1;
+        }
+        return d.get(0);
+        
+    }
+	public static void main (String[] args) {
+		String [] ar = {"abbbababbaaabbaaabbbabaabbababaaabbbbaaaaababbabbaabbabbbaaabaabbaaaaabaaaabbbaabbbabbbbbbbabb", "bbabbaaabaaaabbaaaabbbaaaababbbaabaaaaab", "abbaabaabbaaaaaaaabbaabbabbababaaaaaaabbabaabaabbbabbaabbaababbaabbaba", "bbbbaababbaaaaaaaaabbbabbbabaabababaababaababa", "baaabaabbbbbbaabbabbbabaaaaababaabaababbbaaaaaaaabbbbbabbabaaaaaaaabababaabaababaaabbaaaaaaaaabaa", "aababbbabbaaaaababbabaababbbbbbbbaaabbaaaaabbaabbbba", "ababababaaaaaabbbabbaaababaabb", "bababbaababaabbbabbaab", "baababababbaaaaabbbbbbbbbaabababb", "bbbbb", "aabaabbbaabababbababaaaaabbbbaababaabbabbbbbbaabbaaabbababbbabbabbbaabbbab", "bbaabbbbaabbaaaaaabbbaabababbbaabaaabbbbbabaababbbaababbbaaabaaabaaaababbbbaabbaababb", "aaababbaaaaabaabababbabaabbbbabbaba" }
+			//{"a", "ababa", "aba" }
+		;
+
+	    List<String> a = Arrays.asList(ar);
+		
+		new PlayGround().solve(a);
+	}
+	
+	public static void sort123(int[] a) {
+		int i=0,j=0,k=a.length-1;
+		while(i<=k && j<=k) {
+			if(a[i]==0) {
+				i++;
+			}
+			else if(a[i]==1) {
+				swap(a,i,j);
+				j++;
+			}
+			else if(a[i]==2) {
+				swap(a,i,k);
+				k--;
+			}
+		}
+	}
+	
+	public static void swap(int [] a, int i, int j) {
+		int temp = a[i];
+		a[i] = a[j];
+		a[j] = temp;
+	}
+	
+	enum Mango{
+		APPLE,MAN,Grapes;
+	}
+	    static class Node{
+	        int dep;
+	        int arr;
+	        Node(int arr,int dep){
+	            this.arr = arr;
+	            this.dep = dep;
+	        }
+	        @Override
+	        public String toString() {
+	        	return "("+this.arr+","+this.dep+")";
+	        }
+	    }
+	    
+	public int maxSpecialProductNaive(ArrayList<Integer> A) {
+		ArrayList<Integer> l = new ArrayList();
+		ArrayList<Integer> r = new ArrayList();
+
+		for (int k = 0; k < A.size(); k++) {
+			r.add(0);
+			l.add(0);
+		}
+
+		for (int i = 1; i < A.size(); i++) {
+			if (A.get(i) < A.get(i - 1))
+				l.set(i, i - 1);
+			else {
+				int k = i - 1;
+				while (k > 0) {
+					if (A.get(k) <= A.get(i))
+						k = l.get(k);
+					else {
+						l.set(i, k);
+						break;
+					}
+				}
+			}
+		}
+
+		for (int j = A.size() - 2; j >= 0; j--) {
+			if (A.get(j) < A.get(j + 1))
+				r.set(j, j + 1);
+			else {
+				int k = j + 1;
+				while (k > A.size() - 1) {
+					if (A.get(k) <= A.get(j))
+						k = r.get(k);
+					else {
+						r.set(j, k);
+						break;
+					}
+				}
+			}
+		}
+
+		long prod = -1;
+		for (int s = 0; s < A.size(); s++) {
+			prod = Math.max(prod, 1L * l.get(s) * r.get(s));
+		}
+
+		return (int) (prod % 1000000007);
+
+	}
+	    
+	    
+	    
+	    public int maxSpecialProduct(ArrayList<Integer> A) {
+            if(A.size()==0) {
+            	return -1;
+            }
+            int [] rt = new int[A.size()];
+            int [] lf = new int[A.size()];
+            long mod = 1000000007;
+            
+            lf[0] = 0;
+            rt[A.size()-1] = 0;
+            int n = A.size()-1;
+            
+            Stack<Integer> s = new Stack();
+            s.add(0);
+            
+            for(int i=1;i<A.size();i++){
+                int index = s.peek();
+                while(!s.isEmpty() &&  A.get(index) <= A.get(i) ){
+                    s.pop();
+                    if(!s.isEmpty()) index = s.peek();
+                }
+                
+                if(!s.isEmpty()) lf[i] = s.peek();
+                s.add(i);
+            }
+            
+            s.clear();
+            s.add(n);
+            for(int i=n-1;i>=0;i--){
+                int index = s.peek();
+                while(!s.isEmpty() &&  A.get(index) <= A.get(i) ){
+                    s.pop();
+                    if(!s.isEmpty()) index = s.peek();
+                }
+
+                if(!s.isEmpty()) rt[i] = s.peek();
+                s.add(i);
+            }
+            
+            long max = -1;
+            
+            for( int i=0;i<=n;i++){
+                long temp = ((long)lf[i]*(long)rt[i]);
+                if(max==-1 || max < temp){
+                    max = temp;
+                }
+            }
+            return (int)(max%mod);
+        }
+	    public int maxArr(ArrayList<Integer> A) {
+            List<Integer> minc = new ArrayList<Integer>();
+            List<Integer> mina = new ArrayList<Integer>();
+            
+            for(int i=0;i<A.size();i++) {
+                minc.add(A.get(i)+i);
+                mina.add(A.get(i)-i);
+            }
+            
+            int ans = (int)Math.max(mina.stream().reduce(Integer::max).get() - mina.stream().reduce(Integer::min).get(), minc.stream().reduce(Integer::max).get() - minc.stream().reduce(Integer::min).get());
+            return ans;
+            
+        }
+	    
+	    
+	    public ArrayList<Integer> maxone(ArrayList<Integer> a, int b) {
+            int i=0;
+            int j=0;
+            int maxi = 0;
+            int maxj = 0;
+            int limit = b;
+            while(j<a.size()){
+                if(limit>0){
+                    if(a.get(j)==0){
+                        limit--;
+                        j++;
+                    }
+                    else{
+                        j++;
+                    }
+                }
+                else{
+                    if(a.get(j)==1){
+                        j++;
+                    }
+                    else{
+                        if(a.get(i)==0){
+                            limit++;
+                        }
+                        i++;
+                    }
+                }
+                
+                int diff = j-i;
+                int maxDiff = maxj-maxi;
+                if(maxDiff<diff){
+                    maxi = i;
+                    maxj = j;
+                }
+                
+            }
+            ArrayList<Integer> ar = new ArrayList<Integer>();
+            for(int index=maxi;index<maxj;index++) {
+                ar.add(index);
+            }
+            return ar;
+        }
+	    
+	    
+	    public ArrayList<ArrayList<Integer>> prettyPrint(int A) {
+	    	ArrayList<ArrayList<Integer>> ls = new ArrayList<ArrayList<Integer>>() {
+	    		public String toString() {
+	    	        Iterator<ArrayList<Integer>> it = iterator();
+	    	        if (! it.hasNext())
+	    	            return "[]";
+
+	    	        StringBuilder sb = new StringBuilder();
+	    	        while(it.hasNext()) {
+	    	            List<Integer> e = it.next();
+	    	            for(int i=0;i<e.size();i++) {
+	    	            	sb.append(e.get(i)+" ");
+	    	            }
+	    	            sb.append("\n");
+	    	        }
+	    	        return sb.append("\n").toString();
+	    	    }	    			    		
+	    	};
+	    	
+	    	int n = A + A-1;
+	    	for(int i=0;i<n;i++) {
+	    		ls.add(new ArrayList<Integer>());
+	    		for(int j=0;j<n;j++) {
+	    			ls.get(i).add(0);
+	    		}
+	    	}
+	    	
+	    	int c = n;
+	    	int z = 0;
+	    	int in = A;
+	    	
+	    	while(c>0) {
+	    		
+	    		int y = z;
+	    		for(int i=z;i<c;i++) {
+	    			ls.get(y).set(i, in);
+	    		}
+	    		
+	    		y = n-z-1;
+	    		for(int i=z+1;i<c;i++) {
+	    			ls.get(i).set(y, in);
+	    		}
+	    		
+	    		y = n-z-1;
+	    		for(int i=n-z-2;i>=z;i--) {
+	    			ls.get(y).set(i, in);
+	    		}
+	    		
+	    		y = z;
+	    		for(int i=n-z-2;i>z;i--) {
+	    			ls.get(i).set(y, in);
+	    		}
+	    		z++;
+	    		c--;
+	    		in--;
+	    	}
+	    	
+	    	return ls;
+	    }
+	    
+	    
+	    public ArrayList<Integer> repeatedNumber(final List<Integer> a) {
+	    	
+	    	/*
+	    	 * 
+	    	 * 
+
+5 3 1 2 2 5
+5 3 1 4 4 5
+
+
+	    	 */
+	    	
+	        ArrayList<Integer> arr = new ArrayList<>();
+	        
+	        int sum = 0, sum2=0;
+	        
+	        for(int i=0;i<a.size();i++){
+	            sum+= (i+1) - a.get(i);
+	            sum2+= (i+1)*(i+1) - a.get(i)*a.get(i);
+	        }
+	        
+	        sum2 = ((sum2/sum) - sum)/2;
+	        arr.add(sum2);
+	        arr.add(sum+sum2);
+	        return arr;
+	    }
+	    
+	    public static int cal(int start,int end,String str) {
+	    	if(start==end) return 1;
+	    	if(start<end) {
+	    		if(str.charAt(start) == str.charAt(end)) {
+	    			return 2 + cal(start+1,end-1,str);
+	    		}
+	    		else {
+	    			return Math.max(cal(start+1, end,str),cal(start, end-1,str));
+	    		}
+	    	}
+	    	return 0;
+	    }
+	    
+	    public static int calMemo(String str) {
+	    	int[][] memo = new int[str.length()][str.length()];
+	    	return 0;
+	    }
+	    public int firstMissingPositive(ArrayList<Integer> A) {
+            
+	    	
+            if(A.size()==0) return 1;
+            
+            A = (ArrayList<Integer>)A.stream().filter(x->x>0).collect(Collectors.toList());
+            
+            for(int i=0;i<A.size();i++){
+                
+                int x = Math.abs(A.get(i))-1;
+                if(x<A.size()){
+                    A.set(x,-A.get(x));
+                }
+            }
+            
+            
+            if(A.size()==0) return 1;
+            
+            for(int i=0;i<A.size();i++){
+                if(A.get(i)>0){
+                    return i+1;
+                }
+            }
+            return A.size()+1;
+        }
+
+	    
+	    public String largestNumber(final List<Integer> A) {
+	        StringBuilder sb = new StringBuilder();
+	        
+	        Collections.sort(A,(t1,t2)->{
+	            StringBuilder s1 = new StringBuilder();
+	            StringBuilder s2 = new StringBuilder();
+	            s1.append(t1).append(t2);
+	            s2.append(t2).append(t1);
+	            
+	            long x1 = Long.parseLong(s1.toString());
+	            long x2 = Long.parseLong(s2.toString());
+	       
+	            return (x2-x1)<0 ? -1 : 1 ;
+	        });
+	        
+	        for(int x:A){
+	            sb.append(x);
+	        }
+	        
+	        return sb.toString();
+	    }
+	    
+	    
+	    public ArrayList<Integer> maxset(ArrayList<Integer> a) {
+	        long maxSoFar = -1;
+	        int liSoFar = -1;
+	        int riSoFar = -1;
+	        long sum = -1;
+	        int li=-1,ri=-1;
+	        for(int i=0;i<a.size();i++){
+	            if(a.get(i)<0){
+	                if(sum!=-1  && sum >= maxSoFar){
+	                    if(sum>maxSoFar){
+	                        liSoFar = li;
+	                        riSoFar = ri;
+	                        maxSoFar = sum;
+	                    }
+	                    else if(sum==maxSoFar) {
+	                    	int lenSofar = riSoFar - liSoFar + 1;
+	                    	int len = ri - li + 1;
+	                    	if(len>lenSofar) {
+	                    		liSoFar = li;
+	                    		riSoFar = ri;
+	                    	}
+	                    	else if(li<liSoFar) {
+	                    		liSoFar = li;
+	                    		riSoFar = ri;
+	                    	}
+	                    }
+	                }
+	                li=-1;
+	                ri=-1;
+	                sum = -1;
+	            }
+	            else {
+	            	if(sum==-1) sum = 0;
+	            	sum+=(long)a.get(i);
+	            	if(li==-1) {
+	            		li = i;
+	            	}
+	            	ri=i;
+	            }
+	        }
+	        if(sum!=-1  && sum >= maxSoFar){
+                if(sum>maxSoFar){
+                    liSoFar = li;
+                    riSoFar = ri;
+                    maxSoFar = sum;
+                }
+                else if(sum==maxSoFar) {
+                	int lenSofar = riSoFar - liSoFar + 1;
+                	int len = ri - li + 1;
+                	if(len>lenSofar) {
+                		liSoFar = li;
+                		riSoFar = ri;
+                	}
+                	else if(li<liSoFar) {
+                		liSoFar = li;
+                		riSoFar = ri;
+                	}
+                }
+            }
+	        ArrayList<Integer> out = new ArrayList<Integer>();
+	        if(maxSoFar==-1) return out;
+	        
+	        for(int i=liSoFar;i<=riSoFar;i++) {
+	        	out.add(a.get(i));
+	        }
+	        return out;
+	    }
+	    
+	    
+	    public String longestCommonPrefix(ArrayList<String> A) {
+	        StringBuilder sb = new StringBuilder();
+	        
+	        int n = A.stream().map(t->t.length()).reduce(Integer::min).get();
+	        System.out.println(n);
+	        for(int i=0;i<n;i++){
+	            char m = A.get(0).charAt(i);
+	            for(int j=1;j<A.size();j++){
+	                if(A.get(j).charAt(i) != m){
+	                    return sb.toString();
+	                }
+	            }
+	            sb.append(m);
+	        }
+	        return sb.toString();
+	    }
+	    
+	    public int solve(String A) {
+	        int ans = 0;
+	        int n =  A.length();
+	        int mod = 10003;
+	        
+	        char [] c = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+	        
+	        for(int i=0;i<n;i++){
+	            boolean found = false;
+	            char current = A.charAt(i);
+	            for(int j=0;j<c.length && !found;j++) {
+	            	if(current==c[j]) {
+	            		found = true;
+	            	}
+	            }
+	            if(found) {
+	            	ans+=n-i;
+	            }
+	        }
+	        return ans;
+	    }
+	    
+	    public long reverse(long a) {
+	        if(a==0) return a;
+	        
+	        StringBuilder sb = new StringBuilder();
+	        for(int i=0;i<32;i++){
+	            long temp = 1<<i;
+	            if((temp & a) !=0){
+	                sb.append("1");
+	            }
+	            else
+	                sb.append("0");
+	        }
+	        return Long.parseLong(sb.toString());
+	    }
+	    
+	    public String reverseWords(String a) {
+            String [] words = a.split(" ");
+            if(words.length==0) return a;
+            StringBuilder sb = new StringBuilder();
+            for(int i=words.length-1;i>=0;i--){
+                sb.append(words[i].trim());
+                sb.append(" ");
+            }
+            return sb.substring(0,sb.length()-1).toString();
+        }
+	    
+	    public int strStr(final String B, final String A) {
+	        
+	        int ai = 0;
+	        int bi = 0;
+	        int index = -1;
+	        
+	        while(ai<A.length() && bi<B.length()){
+	            char ac = A.charAt(ai);	
+	            char bc = B.charAt(bi);
+	            
+	            if(ac==bc){
+	            	if(ai==0) index = bi;
+	                ai++;
+	                bi++;
+	                
+	            }else{
+	                ai = 0;
+	                bi = index+1;
+	                index = -1;
+	                
+	            }
+	        }
+	        if(ai==A.length()){
+	            return index;
+	        }
+	        return -1;
+	    }
+	    
+	    
+	    public  void arrange(ArrayList<Integer> a) {
+	        for(int i=0;i<a.size();i++){
+	            int temp = ((a.get(a.get(i))%a.size())*a.size()) + a.get(i);
+	            a.set(i,temp);
+	        }
+	        for(int i=0;i<a.size();i++){
+	            int temp = (a.get(i)/a.size());
+	            a.set(i,temp);
+	        }
+	    }
+	    
+	    
+	    public int titleToNumber(String A) {
+	        int ans = 0;
+	        int base = 65;
+	        for(int i=A.length()-1;i>=0;i--) {
+	        	int current = A.charAt(i) - base + 1;
+	        	ans += current * (int)Math.pow(26, A.length() - (i+1));
+	        }
+	        return ans;
+	    }
+	    
+	    
+	    public static long comb[][] = new long[1001][1001];
+	    public static long exp[] = new long[1001];
+	    
+	    public void preProcessComb(){
+	        for(int i = 0; i < 1001; i++){
+	            for(int j = 0; j <= i; j++){
+	                if(j == 0 || i == j) comb[i][j] = 1;
+	                else{
+	                    comb[i][j] = (comb[i-1][j] + comb[i-1][j-1])%1000000007;
+	                }
+	            }
+	        }
+	        exp[0] = 1;
+	        for(int i = 1; i < 1001; i++){
+	            exp[i] = (exp[i-1]*2)%1000000007;
+	        }
+	    }
+	    public int solve(int A, ArrayList<Integer> B) {
+	        Collections.sort(B);
+	        long ans = 1;
+	        int cnt = B.get(0)-1;
+	        for(int i = 1; i < B.size(); i++){
+	            int t = B.get(i)-B.get(i-1)-1;
+	            if(t > 0){
+	                ans = ((ans*exp[t-1])%1000000007 * comb[cnt+t][t])%1000000007;
+	                cnt += t;
+	            }
+	            //System.out.print(i+" "+t+" ")
+	        }
+	        int t = A-B.get(B.size()-1);
+	        ans = (ans * comb[cnt+t][t])%1000000007;
+	        return (int)ans;
+	    }
+	    
+	    public int length(int A){
+	        int len = 0;
+	        int temp = A;
+	        while(temp>0){
+	            temp = temp/10;
+	            len++;
+	        }
+	        return len;
+	    }
+	    public int isPalindrome(int A) {
+	        int len  = length(A);
+	        int left = len-1;
+	        int right = 1;
+	        while(left>0) {
+	        	int l = (int)(A/Math.pow(10, left));
+	        	int r = (int)(A%Math.pow(10, right));
+	        	if(l!=r) {
+	        		return 0;
+	        	}
+	        	A = (A % (int)Math.pow(10, left));
+	        	A = (A/(int)Math.pow(10, right));
+	        	left = left - 2;
+	        }
+	        return 1;
+	    }
+	    
+	    
+	    public int singleNumber(final List<Integer> A) {
+	         StringBuilder sb = new StringBuilder();
+	            for(int i=0;i<32;i++) {
+	                int count = 0;
+	                for(Integer x:A) {
+	                    if((x & 1<<i)!=0) {
+	                        count++;
+	                    }
+	                }
+	                if(count%3!=0) {
+	                    sb.append(1);
+	                }
+	                else {
+	                    sb.append(0);
+	                }
+	            }
+
+	            int two=1;
+	            int num=two*Integer.parseInt(sb.charAt(0)+"");
+	            for(int i=1;i<sb.length();i++) {
+	                two *= 2;
+	                num+= two*Integer.parseInt(sb.charAt(i)+"");
+	            }
+	            return num;
+	        }
+	    
+	    public int power(String str) {
+	    	StringBuilder number = new StringBuilder(str);
+	    	while(!number.equals("1")){
+	    		int carry = 0;
+	    		StringBuilder qot = new StringBuilder();
+	    		for(int i=0;i<number.length();i++) {		
+	    			int n = number.charAt(i);
+	    			n = n + carry;
+	    			if(n < 2){
+	    				if(qot.length()>0){
+	    					qot.append("0");
+	    				}
+	    				carry = n*10;
+	    			}
+	    			else{				
+	    				qot.append((int)n/2+"");
+	    				carry = (n % 2)*10;
+	    			}
+	    		}
+	    		if(carry!=0){
+	    			return 0;
+	    		}
+	    		number = qot;
+	    	}
+	    	return 1;
+	    }
+	    
+	    public int isPower(int A) {
+	    	if(A==1) return 0;
+	    	
+	        for(int i=2;(i*i)<=A;i++) {
+	        	int num = A;
+	        	while(num!=1) {
+	        		if(num%i==0) {
+	        			num = num/i;
+	        		}
+	        		else {
+	        			break;
+	        		}
+	        	}
+	        	if(num==1) {
+	        		return 1;
+	        	}
+	        }
+	        return 0;
+	    }
+	    
+	    
+	    public ArrayList<Integer> intersect(final List<Integer> a, final List<Integer> b) {
+			int i=0,j=0;
+			ArrayList<Integer> res = new ArrayList<>();
+			while(i<a.size() && j<b.size()){
+				if(a.get(i).equals(b.get(j))) {
+					res.add(a.get(i));
+					i++;
+					j++;
+				}
+				else if(a.get(i)>b.get(j)){
+					j++;
+				}
+				else {
+					i++;
+				}
+			}
+			return res;
+	    }
+	    
+	    private void swap(ArrayList<Integer> a, ArrayList<Integer> b,int ai,int bi){
+	        int temp = a.get(ai);
+	        a.set(ai,b.get(bi));
+	        b.set(bi,temp);
+	    }
+	    
+	    public void merge(ArrayList<Integer> a, ArrayList<Integer> b) {
+	    	ArrayList<Integer> merger = new ArrayList<Integer>();
+	    	int i=0;
+	    	int j=0;
+	    	while(i<a.size() && j < b.size()) {
+	    		if(a.get(i).compareTo(b.get(j))<0) {
+	    			merger.add(a.get(i++));
+	    		}
+	    		else {
+	    			merger.add(b.get(j++));
+	    		}
+	    	}
+	    	while(i<a.size()){
+	    		merger.add(a.get(i++));
+	    	}
+	    	while(j<b.size()){
+	    		merger.add(b.get(j++));
+	    	}
+	    	a.clear();
+	    	a.addAll(merger);
+	    }
+	    
+	    
+	    public int diffPossible(ArrayList<Integer> a, int b) {
+	        if(a.size()==1) return 0;
+	    	int i=0, j=1;
+	        
+	        while(i<a.size() && j < a.size()){
+	        	int sum = a.get(j) - a.get(i);
+	        	if(sum==b) return 1;
+	        	if(sum>b) {
+	        		if(j == (i+1)) {
+	        			i++;
+	        			j++;
+	        		}
+	        		else {
+	        			i++;
+	        		}
+	        	}
+	        	else {
+	        		j++;
+	        	}
+	        }
+	        return 0;
+	    }
+	    
+	    public String countAndSay(int n) {
+            StringBuilder a = new StringBuilder("1");
+            for(int i=1;i<n;i++){
+                char prev = a.charAt(0);
+                int count = 1;
+                StringBuilder next = new StringBuilder();
+                for(int j=1;j<a.length();j++){
+                    if(prev==a.charAt(j)) {
+                        count++;
+                    }
+                    else {
+                        next.append(count+"");
+                        next.append(prev);
+                        count = 1;
+                        prev = a.charAt(j);
+                    }
+                }
+                next.append(count+"");
+                next.append(prev);
+                a = next;
+            }
+            return a.toString();
+        }
+	    
+	    /*------------STRINGOHOLICS--------------------*/
+	    public int findLen(String str){
+		
+		int n = str.length();
+		int[] lps = new int[str.length()];
+
+		int i = 1;
+		int j = 0;
+
+		while (i < n) {
+			if (str.charAt(i) == str.charAt(j)) {
+				j++;
+				lps[i] = j;
+				i++;
+			} else {
+				if (j != 0) {
+					j = lps[j - 1];
+				} else {
+					lps[i] = 0;
+					i++;
+				}
+			}
+		}
+
+		int last = lps[n - 1];
+
+		if (2 * last >= n) {
+			int diff = n - last;
+			if (last % diff == 0)
+				return diff;
+			return n;
+		}
+		return n;
+		 
+        }
+        
+        private static long mod = (long)Math.pow(10, 9) + 7;
+        
+        private long getSum(long j) {
+            if(j==1L) return j;
+            return (j*((j+1L)%mod)%mod)/2L;
+        }
+
+        public long gcd(long A, long B) {
+            if(new Long(B).equals(0L)){
+                return A%mod;
+            }
+            return gcd(B%mod,A%B%mod);
+        }
+        
+        
+        public int solve(List<String> a) {
+            
+            if(a.size()==0) return 0;
+            
+            ArrayList<Long> ans = new ArrayList<>();
+            
+            for(int i=0;i<a.size();i++){
+                String str = a.get(i);
+                long strLen = (long)findLen(str);
+                
+                if(strLen==1) {
+                    ans.add(1L);
+                }
+                else {
+                    for(int j=1;j<=2*str.length()-1;j++){
+                        long sum = getSum((long)j);
+                        if(sum % strLen == 0){
+                            ans.add((long)j);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if(ans.size()==0) return 0;
+           
+           long gc = getLCM(ans);
+           
+           return (int)(gc%mod);
+        }
+	    
+        
+        public long getLCM(List<Long> ans) {
+        	long gc = ans.get(0);
+            
+            for(int i=1;i<ans.size();i++) {
+                    long temp = gcd(gc,ans.get(i))%mod;
+                    temp = ans.get(i)/temp;
+                    gc = (temp*gc)%mod;
+			/*
+			 * gc = ((gc*(ans.get(i)%mod))%mod); gc = (long)gc/temp; gc = gc%mod;
+			 */
+            }
+            return gc%mod;
+        }
+        
+	    /*---------------------------------*/
+	    
+	    
+	    
+		/*
+		 * 
+
+abaaab
+bab
+
+3
+4
+2 1 1
+5
+5 3 2
+7
+5 5 2
+
+
+
+
+		 */
+}
+=====================================================================================================================
+=======================================================================================================================
 
